@@ -1,14 +1,15 @@
 CREATE EXTENSION IF NOT EXISTS postgis;
 
-CREATE TABLE county (
-    countycode VARCHAR(10) PRIMARY KEY,
-    name VARCHAR(100) NOT NULL
+CREATE TABLE country (
+    countrycode CHAR(2) PRIMARY KEY,
+    cityname VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE city (
-    postalcode VARCHAR(15) PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    countycode VARCHAR(10) REFERENCES county(countycode) ON DELETE RESTRICT
+    postalcode VARCHAR(6) NOT NULL,
+    countryname VARCHAR(100) NOT NULL,
+    countrycode CHAR(2) REFERENCES country(countrycode) ON DELETE RESTRICT,
+    PRIMARY KEY (postalcode, countrycode)
 );
 
 CREATE TABLE client (
@@ -73,8 +74,9 @@ CREATE TABLE address (
     streetname VARCHAR(255) NOT NULL,
     streetnumber VARCHAR(10) NOT NULL CHECK (streetnumber ~ '^[0-9]+[A-Za-z]?$'),
     aptnumber VARCHAR(10) DEFAULT NULL,
-    listingpostalcode VARCHAR(15) NOT NULL REFERENCES city(postalcode) ON DELETE RESTRICT,
-    listingcountrycode VARCHAR(10) NOT NULL REFERENCES county(countycode) ON DELETE RESTRICT
+    listingpostalcode VARCHAR(15) NOT NULL,
+    listingcountrycode VARCHAR(10) NOT NULL,
+    FOREIGN KEY (listingpostalcode, listingcountrycode) REFERENCES city (postalcode, countrycode) ON DELETE RESTRICT
 );
 
 CREATE TABLE rental (
