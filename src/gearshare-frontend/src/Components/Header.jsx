@@ -89,7 +89,7 @@ function Header() {
         menuOpen && (
           <nav className={`mobile-menu ${menuOpen ? 'open' : ''}`}>
             <Link to="/about">O nama</Link>
-            <Link to="/chatbot">Chatbot</Link>
+            <Link to="/about">Informacije</Link>
             <Link to="/catalog">Katalog</Link>
           </nav>
         )

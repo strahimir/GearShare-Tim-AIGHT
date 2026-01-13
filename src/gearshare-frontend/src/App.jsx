@@ -7,11 +7,12 @@ import CatalogPage from './pages/Catalog/CatalogPage'
 import ListingPage from './pages/Listing/ListingPage'
 import CheckoutPage from './pages/Checkout/CheckoutPage'
 import ProfilePageClient from './pages/Profile/Klijent/ProfilePageClient'
+import ProfilePageTrgovac from './pages/Profile/Trgovac/ProfilePageTrgovac'
 import ProfilePage from './pages/Profile/ProfilePage'
 import CreateAdPage from './pages/Profile/Trgovac/CreateAdPage'
+import ProfilePageAdmin from './pages/Profile/Admin/ProfilePageAdmin'
 import AboutPage from './pages/About/AboutPage'
 import InboxPage from './pages/Inbox/InboxPage'
-import ChatbotPage from './pages/Chatbot/ChatbotPage'
 import ForumPage from './pages/Forum/ForumPage'
 import RootRedirect from './RootRedirect'
 import { useAuth } from './hooks/useAuth'
@@ -38,10 +39,11 @@ function App() {
           path='welcome'
           element={<WelcomePage />}
         />
-        {/* <Route
+        
+         <Route
           path='login'
           element={<LoginPage />}
-        /> */}
+        /> 
         <Route
           path='catalog'
           element={<CatalogPage />}
@@ -58,10 +60,18 @@ function App() {
           path='profile'
           element={<ProfilePage />}
         />
-        {/* <Route
-          path='profile2'
+        <Route
+          path='profile/client'
           element={<ProfilePageClient />}
-        /> */}
+        />
+        <Route
+          path='profile/trgovac'
+          element={<ProfilePageTrgovac />}
+        />
+        <Route
+          path='profile/admin'
+          element={<ProfilePageAdmin />}
+        />
         <Route
           path='profile/create-ad'
           element={<CreateAdPage />}
@@ -74,10 +84,7 @@ function App() {
           path='inbox'
           element={<InboxPage />}
         />
-        <Route
-          path='chatbot'
-          element={<ChatbotPage />}
-        />
+        
         <Route
           path='forum'
           element={<ForumPage />}

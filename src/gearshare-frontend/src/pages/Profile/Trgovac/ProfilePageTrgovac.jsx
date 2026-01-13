@@ -1,18 +1,16 @@
 import Header from "../../../Components/Header"
 import Footer from "../../../Components/Footer"
-import ProfilePageTrgovacMain from "./ProfilePageTrgovacMain"
-import UserInfo from '../UserInfo'
-import '../../../index.css'
+import ProfilecMain2 from "./ProfileMain2"
 
-function ProfilePage() {
+
+function ProfilePageTrgovac() {
     return (
         <>
             <Header />
-            <UserInfo />
-            <ProfilePageTrgovacMain />
+            <ProfileMain2 />
             <Footer />
         </>
     )
 }
 
-export default ProfilePage
+export default ProfilePageTrgovac

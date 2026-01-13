@@ -12,7 +12,18 @@ export function useAuth() {
             console.log("useAuth: fetching /api/me");
             const data = await getCurrentUser()
             console.log("useAuth: /api/me returned:", data);
-            setUser(data)
+            //tu radis promjenu
+            if (data) {
+        setUser(data);  // Ako postoji stvarni korisnik, postavi ga
+        } else {
+            // Ako nema stvarnog korisnika, postavi simuliranog klijenta
+            setUser({
+            username: "klijent",
+            email: "klijent@example.com",
+            role: "client",  // Simuliraj korisnika s ulogom 'klijent'
+            });
+        }
+            // inace samo setUser(data)
             setLoading(false)
         }
         fetchUser();

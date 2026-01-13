@@ -1,15 +1,15 @@
 import Header from "../../../Components/Header"
 import Footer from "../../../Components/Footer"
-import ProfileMain from "./ProfileMain"
+import ProfileMain from "./ProfileMain3"
 
-function ProfilePageClient() {
+function ProfilePageAdmin() {
     return (
         <>
             <Header />
-            <ProfileMain />
+            <ProfileMain3 />
             <Footer />
         </>
     )
 }
 
-export default ProfilePageClient
+export default ProfilePageAdmin

@@ -1,18 +1,16 @@
 import { useState } from 'react'
-import placeholderImg from '../../assets/images/placeholder_img.png'
-import { partialUpdateClient } from '../../api/clientService'
-import { useAuth } from '../../hooks/useAuth'
-import '../../assets/styles/profile.css'
+import placeholderImg from '../../../assets/images/placeholder_img.png'
+import { partialUpdateAdmin } from '../../../api/adminService'
+import { useAuth } from '../../../hooks/useAuth'
+import '../../../assets/styles/profile.css'
 import { useNavigate } from 'react-router'
 
 
 function UserInfo() {
 
-      const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const handleAddAd = () => {
-    navigate("/profile/create-ad");
-  };
+  
     const { user, setUser } = useAuth()
 
     return (
@@ -37,9 +35,7 @@ function UserInfo() {
                         </div>
                     </>}
 
-                <button className="add-ad-button" onClick={handleAddAd}>
-                    Dodaj novi oglas
-                </button>
+                
             </div>
         </div>
     )

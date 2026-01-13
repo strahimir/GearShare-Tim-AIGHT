@@ -1,13 +1,12 @@
 import UserInfo from "./UserInfo"
-import UserListings from "./UserListings"
-
+import MyReservations from "./MyReservations"
 
 function ProfileMain(){
 
     return(
         <div className="profile-main-container">
             <UserInfo />
-            <UserListings />
+            <MyReservations />
         </div>
     )
 }

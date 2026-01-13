@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react"
-import { useAuth } from '../../hooks/useAuth'
-import { getListingsBySeller, deleteListing } from '../../api/listingService'
-import Listing from "../../Components/Listing"
-import '../../index.css'
+import { useAuth } from '../../../hooks/useAuth'
+import { getListingsBySeller, deleteListing } from '../../../api/listingService'
+import Listing from "../../../Components/Listing"
+import '../../../index.css'
 
-function UserListings() {
+function TrgovacListings() {
     const { user } = useAuth()
     const [listings, setListings] = useState([])
 
@@ -40,4 +40,4 @@ function UserListings() {
     )
 }
 
-export default UserListings
+export default TrgovacListings
