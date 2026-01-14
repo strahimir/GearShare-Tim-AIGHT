@@ -44,14 +44,19 @@ main {
 }
 
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 1.5rem;
-  background-color: #6D94C5; /* plava boja headera */
-  z-index: 1100; /* iznad menija */
-  position: relative; /* da hamburger i meni rade u odnosu na header */
-  
+ /* da hamburger i meni rade u odnosu na header */
+  position: fixed;  /* Fiksiraj header na vrhu */
+  top: 0;
+  left: 0;
+  width: 100%;  /* Osiguraj da zauzima cijelu širinu ekrana */
+  background-color: #6D94C5; /* Plava boja headera */
+  z-index: 1100; /* Osiguraj da bude iznad ostalog sadržaja */
+  display: flex;  /* Koristimo flexbox za raspored */
+  justify-content: space-between;  /* Razmak između elemenata u headeru */
+  align-items: center;  /* Poravnaj elemente vertikalno */
+  padding: 0 1.5rem;  /* Unutrašnji razmak */
+  height: 100px;  /* Visina headera */
+  box-sizing: border-box;  /* Uključuje padding u širinu i visinu */ 
 }
 
 
@@ -364,14 +369,14 @@ footer {
   top: 100px; 
   right: 0;
   height: calc(100vh - 70px); 
-  width: 250px;
+  width: 150px;
   background-color: #6D94C5;
   display: flex;
   flex-direction: column;
   padding: 2rem 1.5rem;
   gap: 1rem;
   z-index: 1000;
-  box-shadow: -2px 0 12px rgba(0, 0, 0, 0.1);
+  box-shadow: -2px 0 12px rgba(225, 65, 65, 0.1);
   transform: translateX(100%);
   transition: transform 0.3s ease;
 }
@@ -383,7 +388,7 @@ footer {
 
 .mobile-menu a {
   text-decoration: none;
-  color: #111;
+  color: #fcf8f8;
   font-weight: 500;
   font-size: 1.2rem;
   transition: color 0.2s;
