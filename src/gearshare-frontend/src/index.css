@@ -44,19 +44,14 @@ main {
 }
 
 header {
- /* da hamburger i meni rade u odnosu na header */
-  position: fixed;  /* Fiksiraj header na vrhu */
-  top: 0;
-  left: 0;
-  width: 100%;  /* Osiguraj da zauzima cijelu širinu ekrana */
-  background-color: #6D94C5; /* Plava boja headera */
-  z-index: 1100; /* Osiguraj da bude iznad ostalog sadržaja */
-  display: flex;  /* Koristimo flexbox za raspored */
-  justify-content: space-between;  /* Razmak između elemenata u headeru */
-  align-items: center;  /* Poravnaj elemente vertikalno */
-  padding: 0 1.5rem;  /* Unutrašnji razmak */
-  height: 100px;  /* Visina headera */
-  box-sizing: border-box;  /* Uključuje padding u širinu i visinu */ 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.5rem;
+  background-color: #6D94C5; /* plava boja headera */
+  z-index: 1100; /* iznad menija */
+  position: relative; /* da hamburger i meni rade u odnosu na header */
+  
 }
 
 
@@ -214,20 +209,42 @@ footer {
   width: 100%;
 }
 
-.filters-options-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: burlywood;
-  color: blanchedalmond;
-  padding: 5px;
+.filters-sidebar {
+  position: fixed; /* Sidebar je fiksiran */
+  top: 0; /* Početak od vrha stranice */
+  right: 0; /* Postavljanje sa desne strane */
+  height: 100vh; /* Da zauzme celu visinu stranice */
+  width: 250px; /* Poželjna širina sidebar-a */
+  background-color: #6D94C5; /* Boja pozadine sidebar-a */
+  padding: 1rem; /* Unutrašnje margine */
+  box-shadow: -2px 0 12px rgba(225, 65, 65, 0.1); /* Senka sa leve strane */
+  z-index: 1000; /* Da se sidebar pojavljuje iznad ostalog sadržaja */
+  transform: translateX(100%); /* Početni položaj je van ekrana */
+  transition: transform 0.3s ease; /* Animacija prilikom otvaranja */
 }
 
-.display-options-container,
-.display-filters-container{
-  display: flex;
-  flex-wrap: nowrap;
+/* Kada je sidebar otvoren */
+.filters-sidebar.open {
+  transform: translateX(0); /* Sidebar dolazi na ekran */
 }
+
+.catalog-main-container {
+  display: flex;
+  flex-direction: row;  /* Pomeranje sidebar-a i lista proizvoda u red */
+  justify-content: flex-start; /* Poravnanje sa leve strane */
+  align-items: flex-start;
+  position: relative; /* Osiguraj da sidebar može biti pozicioniran unutar njega */
+}
+
+.filters-options-container {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  position: relative; /* Ovo je važno za pozicioniranje sidebar-a unutar nje */
+}
+
 
 .listing-container {
   margin: 10px;

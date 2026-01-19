@@ -8,7 +8,11 @@ import { useNavigate } from 'react-router'
 
 function TrgovacInfo() {
 
-      const navigate = useNavigate();
+    const navigate = useNavigate();
+
+    const handleAddAd = () => {
+        navigate("/profile/create-ad");
+    };
 
   
     const { user, setUser } = useAuth()

@@ -1,5 +1,5 @@
-import UserInfo from "./TrgovacInfo"
-import UserListings from "./TrgovacListings"
+import TrgovacInfo from "./TrgovacInfo"
+import TrgovacListings from "./TrgovacListings"
 
 function ProfileMain2(){
 

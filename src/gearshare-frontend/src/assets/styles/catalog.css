@@ -1,14 +1,17 @@
-/* Opći container za CatalogMain */
+
+
+
 .catalog-main-container {
    display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  padding: 20px;
-  background-color: #f9f9f9;
-  padding-top: 60px; /* Razmak za header (ako je 60px) */
-  position: relative;
-  z-index: 1; /* Osiguraj da sadržaj bude ispod sidebar-a */
-}
+   flex-direction: column;
+   min-height: 100vh;
+   padding: 20px;
+   background-color: #f9f9f9;
+   padding-top: 100px; 
+   position: relative;
+   z-index: 1; /* Osiguraj da sadržaj bude ispod sidebar-a */
+  
+  }
 
 /* Razmak između filtera i popisa */
 .filters-options-container {
@@ -20,12 +23,13 @@
 
 /* Container za listu proizvoda */
 .list-container {
- display: flex;
+  display: flex;
   flex-wrap: wrap;
   gap: 20px;
   margin-left: 0;
   transition: margin-left 0.3s ease;
   margin-left: 0; /* Početno stanje bez pomaka */
+ 
 }
 
 /* Razlikovanje između grid i list prikaza */
@@ -79,7 +83,6 @@
   font-weight: bold;
   color: #6D94C5;
   align-items: flex-start;
-  
 }
 
 .display-options-container {
@@ -92,7 +95,6 @@
   align-items: flex-start;  /* Poravnavanje s lijeve strane */
   justify-content: flex-start; /* Poravnavanje s lijeve strane */
 }
-
 
 .display-options-container .toggle-view-container,
 .display-options-container .items-per-page-container,
@@ -107,6 +109,7 @@
   color: #6D94C5;
   align-items: flex-start;
   text-align: left; /* Poravnava tekst lijevo */
+ 
 }
 
 .toggle-view-container button {
@@ -119,7 +122,6 @@
   width: 150px;
   text-align: center;
 }
-
 
 .toggle-view-container button:hover {
   background-color: #5a7f9f;
@@ -187,43 +189,49 @@ select:focus {
   cursor: pointer;
   transition: background-color 0.3s ease;
   font-size: 16px;
-  margin-bottom: 20px;
+  position: fixed;   /* Fiksiramo gumb na vrh stranice */
+  top: 110px;         /* Razmak od headera (ako je header visine 60px, ovde možete povećati razmak) */
+  left: 10px;        /* Razmak od leve strane */
+  z-index: 1001;     /* Osiguraj da je ispred ostalih elemenata */
+  max-width: 200px;  /* Maksimalna širina gumba */
+  width: auto;       /* Automatska širina */
+  white-space: nowrap; /* Da tekst ne izlazi izvan gumba */
 }
 
 .toggle-filters-btn:hover {
   background-color: #5a7f9f;  /* Tamnija nijansa za hover */
 }
 
+/* Filters Sidebar */
 .filters-sidebar {
-  position: fixed;  /* Ovdje koristiš fixed */
-  top: 100px;  /* Sidebar počinje ispod headera */
+  position: fixed;  
+  top: 100px;         /* Sidebar počinje odmah ispod headera */
   left: 0;
-  width: 250px;
+  width: 250px;      /* Širina sidebar-a */
   background-color: #ffffff;
   box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
   z-index: 1000;
-  height: 100%;  /* Osiguraj da sidebar zauzima cijeli prostor */
-  max-height: calc(100vh - 100px); /* Ne prelazi visinu ekrana, ostaje ispod headera */
+  height: calc(100vh - 100px); /* Sidebar zauzima cijelu visinu ekrana osim prostora za header */
   overflow-y: auto;  /* Omogućava skrolanje unutar sidebar-a */
+  transition: transform 0.3s ease;
+  transform: translateX(-100%); /* Početno stanje sidebar-a je izvan ekrana */
 }
 
 .filters-sidebar.open {
   transform: translateX(0); /* Otvori sidebar */
 }
-/* Povećaj marginu za listu kada je sidebar otvoren */
+
+/* Opcija za popis proizvoda kada je sidebar otvoren */
 .filters-sidebar.open ~ .list-container {
   margin-left: 270px; /* Prostor za sidebar */
 }
 
-/* Opcije za prikazivanje proizvoda */
-.listings-container {
-  margin-left: 270px; /* Razmak za sidebar */
-}
-/* Razmak između filtera i popisa */
-.filters-options-container {
+/* Container za proizvode sa razmakom za sidebar */
+.list-container {
+  margin-left: 270px; /* Razmak od leve strane kad je sidebar otvoren */
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  flex-grow: 1;
+  flex-wrap: wrap;
+  gap: 20px;
+  transition: margin-left 0.3s ease;
 }

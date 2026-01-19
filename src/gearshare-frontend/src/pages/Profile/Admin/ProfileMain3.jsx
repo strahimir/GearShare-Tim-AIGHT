@@ -1,4 +1,4 @@
-import UserInfo from "./AdminInfo"
+import AdminInfo from "./AdminInfo"
 
 function ProfileMain3(){
 

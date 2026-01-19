@@ -23,9 +23,8 @@ function CatalogMain() {
     setFilters(prevFilters => ({ ...prevFilters, ...newFilters }));
   };
 
-  
   const closeFilters = () => {
-    setIsFiltersOpen(false);  // Zatvara sidebar filtere
+    setIsFiltersOpen(false);  // Zatvori sidebar filtere
   };
 
   useEffect(() => {
@@ -53,19 +52,22 @@ function CatalogMain() {
     <div className="catalog-main-container">
       <div className="filters-options-container">
         {/* Gumb za otvaranje/zatvaranje filtera */}
-        <button className="toggle-filters-btn" onClick={toggleFilters}>
-          {isFiltersOpen ? "Zatvori filtere" : "Odaberi filtere"}
+        {!isFiltersOpen && (
+          <button className="toggle-filters-btn" onClick={toggleFilters}>
+           Odaberi filtere
         </button>
-
+        )}
         {/* Ako su filteri otvoreni, prikaži filtere */}
         {isFiltersOpen && (
           <div className="filters-sidebar open">
             <DisplayOptions changeListingsContainerStyle={changeListingsContainerStyle} onFilterChange={handleFilterChange} />
-            <DisplayFilters onFilterChange={handleFilterChange} closeFilters={closeFilters}/>
+            <DisplayFilters onFilterChange={handleFilterChange} closeFilters={closeFilters} />
           </div>
         )}
+      </div>
 
-        {/* Opcije za prikazivanje proizvoda */}
+      {/* Prikazivanje oglasa */}
+      <div className="listings-container">
         <Listings products={products} listingsContainerStyle={listingsContainerStyle} />
       </div>
     </div>
