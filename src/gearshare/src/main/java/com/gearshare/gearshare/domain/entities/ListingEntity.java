@@ -33,7 +33,7 @@ public class ListingEntity {
     @Column(nullable = false)
     private String title;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne//(fetch = FetchType.EAGER)
     @JoinColumn( name = "selleruuid", referencedColumnName = "clientuuid", nullable = false)
     @OnDelete( action = OnDeleteAction.CASCADE )
     private ClientEntity seller;
@@ -54,7 +54,7 @@ public class ListingEntity {
 
     @Column(nullable = false)
     @Min(1)
-    private Integer minimumRentalDays = 1;
+    private Integer minimumRentalDays;
 
     @Column(nullable = false)
     @DecimalMin("0.0")

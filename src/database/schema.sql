@@ -16,7 +16,7 @@ CREATE TABLE client (
     clientuuid UUID PRIMARY KEY,
     username VARCHAR(30) UNIQUE NOT NULL CHECK (username ~ '^[A-Za-z_][A-Za-z0-9._]*$'),
     email VARCHAR(255) UNIQUE NOT NULL,
-    dateJoined DATE NOT NULL DEFAULT CURRENT_DATE,
+    datejoined DATE NOT NULL DEFAULT CURRENT_DATE,
     firstname VARCHAR(30) NOT NULL,
     lastname VARCHAR(30),
     phonenumber VARCHAR(20) DEFAULT NULL,
@@ -35,6 +35,7 @@ CREATE TABLE seller (
 );
 
 CREATE TABLE report (
+    reportuuid UUID PRIMARY KEY,
     selleruuid UUID NOT NULL REFERENCES client(clientuuid), -- reporter
     clientuuid UUID NOT NULL REFERENCES client(clientuuid), -- reportee
     reportdatetime TIMESTAMP NOT NULL DEFAULT NOW(),
@@ -42,14 +43,15 @@ CREATE TABLE report (
     adminuuid UUID NOT NULL REFERENCES client(clientuuid), -- reviewer
     reviewdatetime TIMESTAMP DEFAULT NULL,
     outcome BOOLEAN DEFAULT FALSE,
-    PRIMARY KEY (clientuuid, selleruuid, reportdatetime)
+    UNIQUE (clientuuid, selleruuid, reportdatetime)
 );
 
 CREATE TABLE suspension (
+    suspensionuuid UUID PRIMARY KEY,
     clientuuid UUID NOT NULL REFERENCES client(clientuuid), -- suspendee
     suspensionstartdatetime TIMESTAMP UNIQUE NOT NULL,
     suspensionlength SMALLINT NOT NULL, -- -1 = permaban
-    PRIMARY KEY (clientuuid, suspensionstartdatetime, suspensionlength)
+    UNIQUE (clientuuid, suspensionstartdatetime)
 );
 
 CREATE TABLE listing (
@@ -80,6 +82,7 @@ CREATE TABLE address (
 );
 
 CREATE TABLE rental (
+    rentaluuid UUID PRIMARY KEY,
     clientuuid UUID NOT NULL REFERENCES client(clientuuid) ON DELETE CASCADE,
     listinguuid UUID NOT NULL REFERENCES listing(listinguuid) ON DELETE CASCADE,
     selleruuid UUID NOT NULL REFERENCES client(clientuuid) ON DELETE CASCADE,
@@ -87,8 +90,13 @@ CREATE TABLE rental (
     rentingEndDateTime TIMESTAMP NOT NULL,
     rating SMALLINT CHECK (rating BETWEEN 1 AND 5) DEFAULT NULL,
     review TEXT DEFAULT NULL,
-    PRIMARY KEY (clientuuid, listinguuid, selleruuid, rentingStartDateTime)
+    UNIQUE (clientuuid, listinguuid, selleruuid, rentingStartDateTime)
 );
 
-
-
+CREATE TABLE image (
+    imageuuid UUID PRIMARY KEY,
+    filename VARCHAR NOT NULL,
+    content BYTEA NOT NULL,
+    listinguuid UUID REFERENCES listing(listinguuid) ON DELETE CASCADE,
+    clientuuid UUID NOT NULL REFERENCES client(clientuuid) ON DELETE CASCADE
+);

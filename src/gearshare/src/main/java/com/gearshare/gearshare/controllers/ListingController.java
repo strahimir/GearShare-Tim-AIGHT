@@ -56,14 +56,14 @@ public class ListingController {
         return new ResponseEntity<>(listingDtos, HttpStatus.OK);
     }
 
-    @GetMapping(path = "/all")
-    public List<ListingDto> getAllListings() {
-        List<ListingEntity> listings = listingService.findAllListings();
-        return listings
-                .stream()
-                .map(listingMapper::mapTo)
-                .collect(Collectors.toList());
-    }
+//    @GetMapping(path = "/all")
+//    public List<ListingDto> getAllListings() {
+//        List<ListingEntity> listings = listingService.findAllListings();
+//        return listings
+//                .stream()
+//                .map(listingMapper::mapTo)
+//                .collect(Collectors.toList());
+//    }
 
     @GetMapping(path = "/filtered")
     public ResponseEntity<Page<ListingDto>> getAllListingsPageable(

@@ -15,7 +15,6 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Entity
 @Table( name = "address" )
 public class AddressEntity {
@@ -24,8 +23,8 @@ public class AddressEntity {
     @GeneratedValue( strategy = GenerationType.UUID)
     private UUID addressUUID;
 
-    @OneToOne( fetch = FetchType.EAGER )
-    @PrimaryKeyJoinColumn( name = "listingaddressuuid", referencedColumnName = "listinguuid")
+    @OneToOne//( fetch = FetchType.EAGER )
+    @JoinColumn( name = "listingaddressuuid", referencedColumnName = "listinguuid")
     @OnDelete( action = OnDeleteAction.CASCADE )
     private ListingEntity listing;
 
@@ -39,14 +38,8 @@ public class AddressEntity {
 
     private String aptNumber;
 
-//    @ManyToOne( fetch = FetchType.EAGER )
-//    @JoinColumn( name = "listingpostalcode", referencedColumnName = "postalcode", nullable = false)
-//    @OnDelete( action = OnDeleteAction.RESTRICT )
     private String listingPostalCode;
 
-//    @ManyToOne( fetch = FetchType.EAGER )
-//    @JoinColumn( name = "listingcountrycode", referencedColumnName = "countrycode", nullable = false)
-//    @OnDelete( action = OnDeleteAction.RESTRICT )
     private String listingCountryCode;
 
 }

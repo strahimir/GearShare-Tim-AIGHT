@@ -2,10 +2,13 @@ package com.gearshare.gearshare.controllers;
 
 
 import com.gearshare.gearshare.domain.dto.AddressDto;
+import com.gearshare.gearshare.domain.dto.CoordinatesDto;
 import com.gearshare.gearshare.domain.entities.AddressEntity;
 import com.gearshare.gearshare.mappers.Mapper;
 import com.gearshare.gearshare.services.AddressService;
 import com.gearshare.gearshare.services.ListingService;
+import com.gearshare.gearshare.services.geocoding.RadarGeocodingService;
+import org.locationtech.jts.geom.Point;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,15 +28,28 @@ public class AddressController {
 
     private final Mapper<AddressEntity, AddressDto> addressMapper;
 
-    public AddressController(AddressService addressService, ListingService listingService, Mapper<AddressEntity, AddressDto> addressMapper) {
+    private final RadarGeocodingService radarGeocodingService;
+
+    public AddressController(AddressService addressService, ListingService listingService, Mapper<AddressEntity, AddressDto> addressMapper, RadarGeocodingService radarGeocodingService) {
         this.addressService = addressService;
         this.listingService = listingService;
         this.addressMapper = addressMapper;
+        this.radarGeocodingService = radarGeocodingService;
     }
 
     @PostMapping(path = "/{listingUUID}/address")
     public ResponseEntity<AddressDto> createAddress(@RequestBody AddressDto address,
                                                     @PathVariable("listingUUID") UUID listingUUID) {
+
+        Point point = radarGeocodingService.radarGeocodeForward(address);
+
+        address.setCoordinates(
+                new CoordinatesDto(
+                        point.getY(), // latitude
+                        point.getX()  // longitude
+                )
+        );
+
         AddressEntity addressEntity = addressMapper.mapFrom(address);
         AddressEntity savedAddressEntity = addressService.createOrUpdateAddress(addressEntity, listingUUID);
         return new ResponseEntity<>(addressMapper.mapTo(savedAddressEntity), HttpStatus.CREATED);
