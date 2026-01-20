@@ -80,12 +80,11 @@ public class AddressController {
         return new ResponseEntity<>(addressMapper.mapTo(savedAddressEntity), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/city/{postalCode}-{countryCode}")
+    @GetMapping(path = "/city")
     public ResponseEntity<List<AddressDto>> getListingsByCity(
-            @PathVariable("postalCode") String postalCode,
-            @PathVariable("countryCode") String countryCode
+            @RequestParam("postalCode") String postalCode,
+            @RequestParam("countryCode") String countryCode
     ) {
-
         List<AddressEntity> addressEntities = addressService.findAllAddressesFromCityInCountry(postalCode, countryCode);
 
         List<AddressDto> addressDtos =
@@ -96,5 +95,48 @@ public class AddressController {
 
         return new ResponseEntity<>(addressDtos, HttpStatus.OK);
     }
+
+    @GetMapping(path = "/nearby")
+    public ResponseEntity<List<AddressDto>> getListingsInRadius(
+            @RequestBody AddressDto address,
+            @RequestParam(name = "latitude", required = false, defaultValue = "91") double latitude,
+            @RequestParam(name = "longitude", required = false, defaultValue = "181") double longitude,
+            @RequestParam("radius") double radius) {
+
+        boolean flag = latitude == 91 || longitude == 181 || !(latitude <= Math.abs(180) && longitude <= Math.abs(90));
+
+        if (address == null && flag)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        double lat_param, long_param;
+
+        if (address != null) {
+            Point point = radarGeocodingService.radarGeocodeForward(address);
+
+            lat_param = point.getY();
+            long_param = point.getX();
+            address.setCoordinates(
+                    new CoordinatesDto(
+                            point.getY(),
+                            point.getX()
+                    )
+            );
+        }
+        else {
+            lat_param = latitude;
+            long_param = longitude;
+        }
+
+        List<AddressEntity> addressEntities = addressService.findAllListingsWithinRadius(lat_param, long_param, radius);
+
+        List<AddressDto> addressDtos =
+                addressEntities
+                        .stream()
+                        .map(addressMapper::mapTo)
+                        .collect(Collectors.toList());
+
+        return new ResponseEntity<>(addressDtos, HttpStatus.OK);
+    }
+
 
 }

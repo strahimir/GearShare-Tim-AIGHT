@@ -39,4 +39,9 @@ public class AddressServiceImpl implements AddressService {
     public List<AddressEntity> findAllAddressesFromCityInCountry(String postalCode, String countryCode) {
         return addressRepository.findByListingPostalCodeAndListingCountryCode(postalCode, countryCode);
     }
+
+    @Override
+    public List<AddressEntity> findAllListingsWithinRadius(double latitude, double longitude, double radius) {
+        return addressRepository.findWithinRadius(latitude, longitude, radius);
+    }
 }

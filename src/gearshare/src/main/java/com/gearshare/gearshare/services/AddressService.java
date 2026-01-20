@@ -1,5 +1,6 @@
 package com.gearshare.gearshare.services;
 
+import com.gearshare.gearshare.domain.dto.AddressDto;
 import com.gearshare.gearshare.domain.entities.AddressEntity;
 
 import java.util.List;
@@ -14,4 +15,5 @@ public interface AddressService {
 
     List<AddressEntity> findAllAddressesFromCityInCountry(String postalCode, String countryCode);
 
+    List<AddressEntity> findAllListingsWithinRadius(double latitude, double longitude, double radius);
 }
