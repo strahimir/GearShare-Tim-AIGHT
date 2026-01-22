@@ -1,0 +1,34 @@
+
+
+.search-listings-container {
+    display: flex;
+    padding: 12px 20px;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+.switch-search-option-button-containers{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.search-bycountrythencity-btn,
+.search-byuserlocation-btn {
+    border-radius: 10px;
+}
+
+.search-bycountrythencity-btn {
+    background-color:cadetblue;
+}
+.search-byuserlocation-btn {
+    background-color: darkseagreen;
+}
+
+.search-byuserlocation-form,
+.search-bycountrythencity-form{
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+}

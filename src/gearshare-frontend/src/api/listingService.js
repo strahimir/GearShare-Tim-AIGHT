@@ -1,14 +1,88 @@
 import api from "./axios"
 
-export async function createListing(listingDto) {
-  try {
-    const response = await api.post("/listings", listingDto)
-    return response.data
-  } catch (error) {
-    console.error("Failed to create listing:", error)
-    return null
-  }
+// api za adrese
+
+export async function getAddressByCityInCountry(postalCode, countryCode) {
+    try {
+        const response = await api.get(`/listings/city`, {
+            params: { postalCode, countryCode }
+        })
+        return response.data
+    } catch (error) {
+        console.error(`Failed to get listings for provided parameters:\npostal code:${postalCode}\ncountry code:${countryCode}. (${error}) `)
+    }
+
 }
+
+export async function getAddressWithinRadiusByCoords(lat, lng, radius) {
+    const response = await api.post(
+        `/listings/nearby?radius=${radius}&latitude=${lat}&longitude=${lng}`
+    )
+    return response.data
+}
+
+export async function getAddressWithinRadiusByAddress(addressDto, radius) {
+    const response = await api.post(
+        `/listings/nearby?radius=${radius}`,
+        addressDto
+    )
+    return response.data
+}
+
+
+
+export async function addAddress(listingUUID, addressDto) {
+    try {
+        const response = await api.post(`/listings/${listingUUID}/address`, addressDto)
+        return response.data
+    } catch (error) {
+        console.error(`Failed to get address for listing ${listingUUID}: `, error)
+    }
+}
+
+export async function getAddressByListing(listingUUID) {
+    try {
+        const response = await api.get(`/listings/${listingUUID}/address`)
+        return response.data
+    } catch (error) {
+        console.error(`Failed to get address for listing ${listingUUID}: `, error)
+    }
+}
+
+export async function updateAddress(listingUUID, addressDto) {
+    try {
+        const response = await api.put(`/listings/${listingUUID}/address`, addressDto)
+        return response.data
+    } catch (error) {
+        console.error(`Failed to get address for listing ${listingUUID}: `, error)
+    }
+}
+
+// api za oglase
+
+export async function createListing(sellerUUID, listingDto, addressDto) {
+    try {
+        const listingResponse = await api.post(
+            `/listings/seller/${sellerUUID}`,
+            listingDto
+        )
+
+        const listingUUID = listingResponse.data.listingUUID
+
+        const addressResponseData = await addAddress(listingUUID, addressDto)
+
+        // console.log(addressResponseData.coordinates)
+
+        return listingResponse.data
+    } catch (error) {
+        console.error(
+            `Failed to create listing for seller ${sellerUUID}:`,
+            error
+        )
+        return null
+    }
+}
+
 
 export async function getListingsBySeller(sellerUUID) {
   try {
@@ -21,42 +95,38 @@ export async function getListingsBySeller(sellerUUID) {
 }
 
 export async function getAllListings() {
-  try {
-    const page = await getListingsPageable({ pageNo: 1, listingCount: 1000 })
-    return page?.content ?? []
-  } catch (error) {
-    console.error("Failed to fetch all listings:", error)
-    return []
-  }
+    try {
+        const response = await api.get("/listings/all")
+        return response.data
+    } catch (error) {
+        console.error("Failed to fetch all listings:", error)
+        return []
+    }
 }
 
 export async function getListingsPageable(options = {}) {
-  try {
-    const params = {
-      availabilityStart: options.availabilityStart,
-      availabilityEnd: options.availabilityEnd,
-      minRentalDays: options.minRentalDays,
-      maxRentalDays: options.maxRentalDays,
-      minPricePerDay: options.minPricePerDay,
-      maxPricePerDay: options.maxPricePerDay,
-      seasons: options.seasons,
-      equipmentTypes: options.equipmentTypes,
-      equipmentConditions: options.equipmentConditions,
-      pageNo: options.pageNo ?? 1,
-      listingCount: options.listingCount ?? 50,
-      sortBy: options.sortBy ?? ["availabilityPeriodStart,DESC"],
+    try {
+        const params = {
+            availabilityStart: options.availabilityStart,
+            availabilityEnd: options.availabilityEnd,
+            minRentalDays: options.minRentalDays,
+            maxRentalDays: options.maxRentalDays,
+            minPricePerDay: options.minPricePerDay,
+            maxPricePerDay: options.maxPricePerDay,
+            seasons: options.seasons,
+            equipmentTypes: options.equipmentTypes,
+            equipmentConditions: options.equipmentConditions,
+            pageNo: options.pageNo || 1,
+            listingCount: options.listingCount || 50,
+            sortBy: options.sortBy || ['availabilityPeriodStart,DESC']
+        }
+
+        const response = await api.get('/listings', { params })
+        return response.data // <--------- Page<ListingDto> !!!!!!!!!!!!!
+    } catch (error) {
+        console.error('Failed to fetch pageable listings:', error)
+        return null
     }
-
-    Object.keys(params).forEach((k) => {
-      if (params[k] === undefined || params[k] === null) delete params[k]
-    })
-
-    const response = await api.get("/listings/filtered", { params })
-    return response.data
-  } catch (error) {
-    console.error("Failed to fetch pageable listings:", error)
-    return null
-  }
 }
 
 export async function getListingByUUID(listingUUID) {

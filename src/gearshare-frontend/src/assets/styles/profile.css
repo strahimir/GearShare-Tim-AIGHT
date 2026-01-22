@@ -105,7 +105,7 @@
 }
 
 
-.create-ad-form {
+.create-listing-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -114,7 +114,7 @@
     text-align: left;
 }
 
-.create-ad-form label {
+.create-listing-form label {
     display: flex;
     flex-direction: column;
     font-weight: 500;
@@ -122,10 +122,10 @@
     font-size: 14px;
 }
 
-.create-ad-form input[type="text"],
-.create-ad-form input[type="number"],
-.create-ad-form input[type="file"],
-.create-ad-form textarea {
+.create-listing-form input[type="text"],
+.create-listing-form input[type="number"],
+.create-listing-form input[type="file"],
+.create-listing-form textarea {
     margin-top: 5px;
     padding: 10px;
     border-radius: 8px;
@@ -135,10 +135,49 @@
     transition: border 0.2s;
 }
 
-.create-ad-form input:focus,
-.create-ad-form textarea:focus {
+.create-listing-form input:focus,
+.create-listing-form textarea:focus {
     border-color: #6D94C5;
     outline: none;
+}
+
+.edit-profile-button-container {
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.edit-profile-button,
+.save-profile-button,
+.cancel-profile-button {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem; 
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.edit-profile-button {
+    background-color: #4a90e2;
+    color:antiquewhite;
+}
+
+.save-profile-button {
+    background-color:olivedrab; 
+    color:antiquewhite;
+}
+
+.cancel-profile-button {
+    background-color: maroon;
+    color:antiquewhite;
+}
+
+.edit-profile-button:hover,
+.save-profile-button:hover,
+.cancel-profile-button:hover {
+    opacity: 0.9;
 }
 
 @media (max-width: 600px) {
@@ -154,7 +193,7 @@
         width: 100%;
     }
 
-    .create-ad-form {
+    .create-listing-form {
         width: 100%;
     }
 }

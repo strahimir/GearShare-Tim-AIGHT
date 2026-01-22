@@ -51,11 +51,10 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(withDefaults())
                 .authorizeHttpRequests(authorize ->
-                        authorize
-                                .requestMatchers("/welcome", "/oauth2/**", "/login/**").permitAll()
-                                // You might want /api/me to be authenticated, but leaving as-is for debugging
-                                .requestMatchers("/api/me").permitAll()
-                                .anyRequest().authenticated()
+                                authorize
+                                        .requestMatchers("/welcome", "/oauth2/**", "/login/**").permitAll()
+                                        .requestMatchers("/api/me").permitAll()
+                                        .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 ->
                         oauth2

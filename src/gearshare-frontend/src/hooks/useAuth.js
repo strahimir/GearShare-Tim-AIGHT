@@ -9,9 +9,9 @@ export function useAuth() {
 
     useEffect(() => {
         const fetchUser = async () => {
-            console.log("useAuth: fetching /api/me");
+            // console.log("useAuth: fetching /api/me");
             const data = await getCurrentUser()
-            console.log("useAuth: /api/me returned:", data);
+            // console.log("useAuth: /api/me returned:", data);
             setUser(data)
             setLoading(false)
         }

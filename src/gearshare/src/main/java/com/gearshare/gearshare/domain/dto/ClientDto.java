@@ -27,12 +27,6 @@ public class ClientDto {
 
     private Date dateJoined;
 
-//    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-//    private LocalDateTime subscriptionStartDateTime;
-//
-//    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-//    private LocalDateTime subscriptionEndDateTime;
-
     private String firstName;
 
     private String lastName;

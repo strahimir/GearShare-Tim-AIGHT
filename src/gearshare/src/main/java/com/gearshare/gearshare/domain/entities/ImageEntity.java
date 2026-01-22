@@ -24,6 +24,7 @@ public class ImageEntity {
 
     private String filename;
 
+    @Column(name = "content", columnDefinition = "bytea")
     private byte[] content;
 
     @ManyToOne
