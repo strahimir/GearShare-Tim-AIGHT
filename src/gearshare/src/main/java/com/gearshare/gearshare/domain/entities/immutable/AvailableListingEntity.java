@@ -1,75 +1,56 @@
-package com.gearshare.gearshare.domain.entities;
+package com.gearshare.gearshare.domain.entities.immutable;
+
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.gearshare.gearshare.domain.entities.ClientEntity;
 import com.gearshare.gearshare.interfaces.ListingInterface;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.Immutable;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Entity
-@Table( name = "listing" )
-public class ListingEntity implements ListingInterface {
+@Table(name = "available_listing")
+@Immutable
+public class AvailableListingEntity implements ListingInterface {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.UUID)
     private UUID listingUUID;
 
-    @NotBlank
-    @Column(nullable = false)
     private String title;
 
-    @ManyToOne//(fetch = FetchType.EAGER)
-    @JoinColumn( name = "selleruuid", referencedColumnName = "clientuuid", nullable = false)
-    @OnDelete( action = OnDeleteAction.CASCADE )
+    @ManyToOne
+    @JoinColumn( name = "selleruuid", referencedColumnName = "clientuuid", nullable = false, insertable = false, updatable = false)
     private ClientEntity seller;
 
     private String description;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    @Column(insertable = false, updatable = false)
     private LocalDateTime postedDateTime;
 
-    @NotNull
-    @Column(nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime availabilityPeriodStart;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime availabilityPeriodEnd;
 
-    @Column(nullable = false)
-    @Min(1)
     private Integer minimumRentalDays;
 
-    @Column(nullable = false)
-    @DecimalMin("0.0")
     private BigDecimal pricePerMinimumPeriod = BigDecimal.valueOf(0.0);
 
     private String season;
 
-    @NotBlank
-    @Column(nullable = false)
     private String equipmentType;
 
-    @NotBlank
-    @Column(nullable = false)
     private String equipmentCondition;
-
 
 }
