@@ -69,8 +69,14 @@ public class ClientServiceImpl implements ClientService {
 
         return clientRepository.findById(clientUUID)
                 .map(existingClient -> {
-                    Optional.ofNullable(client.getUsername()).ifPresent(existingClient::setUsername);
-                    Optional.ofNullable(client.getEmail()).ifPresent(existingClient::setEmail);
+                    Optional.ofNullable(client.getUsername())
+                            .ifPresent(existingClient::setUsername);
+                    Optional.ofNullable(client.getPhoneNumber())
+                            .ifPresent(existingClient::setPhoneNumber);
+                    Optional.ofNullable(client.getFirstName())
+                            .ifPresent(existingClient::setFirstName);
+                    Optional.ofNullable(client.getLastName())
+                            .ifPresent(existingClient::setLastName);
 
                     return clientRepository.save(existingClient);
                 }).orElseThrow(() -> new RuntimeException(String.format("Client with UUID [%s] doesn't exist!", clientUUID)));
@@ -89,7 +95,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Optional<ClientEntity> findClientWithProviderAndProviderId(String provider, String providerId) {
-        return clientRepository.findByProviderAndProviderId(provider , providerId);
+        return clientRepository.findByProviderAndProviderId(provider, providerId);
     }
 
     @Override

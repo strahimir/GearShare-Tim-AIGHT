@@ -46,7 +46,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize ->
                                 authorize
                                         .requestMatchers("/welcome", "/oauth2/**", "/login/**").permitAll()
-                                        .requestMatchers("/api/me").permitAll()  
+                                        .requestMatchers("/api/me").permitAll()
                                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 ->
@@ -76,7 +76,7 @@ public class SecurityConfig {
             frontendUrl,
             "http://localhost:5173"
         ));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
 

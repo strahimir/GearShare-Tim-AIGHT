@@ -96,9 +96,9 @@ public class AddressController {
         return new ResponseEntity<>(addressDtos, HttpStatus.OK);
     }
 
-    @GetMapping(path = "/nearby")
+    @PostMapping(path = "/nearby")
     public ResponseEntity<List<AddressDto>> getListingsInRadius(
-            @RequestBody AddressDto address,
+            @RequestBody(required = false) AddressDto address,
             @RequestParam(name = "latitude", required = false, defaultValue = "91") double latitude,
             @RequestParam(name = "longitude", required = false, defaultValue = "181") double longitude,
             @RequestParam("radius") double radius) {
@@ -111,16 +111,12 @@ public class AddressController {
         double lat_param, long_param;
 
         if (address != null) {
+
             Point point = radarGeocodingService.radarGeocodeForward(address);
 
             lat_param = point.getY();
             long_param = point.getX();
-            address.setCoordinates(
-                    new CoordinatesDto(
-                            point.getY(),
-                            point.getX()
-                    )
-            );
+
         }
         else {
             lat_param = latitude;
