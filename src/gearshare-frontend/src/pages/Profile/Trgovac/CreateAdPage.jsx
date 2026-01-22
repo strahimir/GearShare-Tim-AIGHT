@@ -55,7 +55,7 @@ function CreateAdPage() {
     }
 
     
-    const result = await createListing(user.clientUUID, listingData)
+    const result = await createListing(listingData)
 
     if (result) {
       console.log("Listing created successfully:", result)

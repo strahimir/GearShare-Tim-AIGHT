@@ -33,6 +33,6 @@ public class SuspensionEntity {
     private LocalDateTime suspensionStartDateTime;
 
     @NotNull
-    private int suspensionLength;
+    private short suspensionLength;
 
 }
