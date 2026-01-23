@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Immutable;
+import org.hibernate.annotations.Subselect;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -19,7 +20,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "available_listing")
+@Subselect("""
+    SELECT *
+    FROM available_listing
+""")
 @Immutable
 public class AvailableListingEntity implements ListingInterface {
 
@@ -45,7 +49,7 @@ public class AvailableListingEntity implements ListingInterface {
 
     private Integer minimumRentalDays;
 
-    private BigDecimal pricePerMinimumPeriod = BigDecimal.valueOf(0.0);
+    private BigDecimal pricePerMinimumPeriod;
 
     private String season;
 

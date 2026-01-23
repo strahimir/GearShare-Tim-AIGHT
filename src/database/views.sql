@@ -7,4 +7,5 @@ WHERE listinguuid NOT IN
 (SELECT listinguuid
 	FROM rental
 	WHERE review IS NULL
+	AND rating IS NULL
 	AND CURRENT_TIMESTAMP BETWEEN rentingstartdatetime AND rentingenddatetime);

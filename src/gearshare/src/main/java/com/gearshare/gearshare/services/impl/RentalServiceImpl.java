@@ -72,4 +72,9 @@ public class RentalServiceImpl implements RentalService {
 
 
     }
+
+    @Override
+    public List<RentalEntity> getUnreviewedRentals(UUID clientUUID) {
+        return rentalRepository.findAllUnreviewedRentals(clientUUID);
+    }
 }

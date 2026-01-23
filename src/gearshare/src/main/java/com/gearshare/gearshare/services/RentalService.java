@@ -15,4 +15,6 @@ public interface RentalService {
     boolean exists(UUID rentalUUID);
 
     RentalEntity updateRentalWithUUID(UUID rentalUUID, RentalEntity rentalEntity);
+
+    List<RentalEntity> getUnreviewedRentals(UUID clientUUID);
 }

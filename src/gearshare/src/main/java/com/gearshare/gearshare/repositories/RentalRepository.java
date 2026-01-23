@@ -14,4 +14,7 @@ public interface RentalRepository extends JpaRepository<RentalEntity, UUID> {
 
     @Query( value = "SELECT * FROM rental WHERE listinguuid = ?1 AND rating IS NULL", nativeQuery = true )
     List<RentalEntity> findReservations(UUID listingUUID);
+
+    @Query( value = "SELECT * FROM rental WHERE client = ?1 AND rating IS NULL AND review IS NULL and CURRENT_DATE >= reservationEndDateTime", nativeQuery = true )
+    List<RentalEntity> findAllUnreviewedRentals(UUID clientUUID);
 }
