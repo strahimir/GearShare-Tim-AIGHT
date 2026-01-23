@@ -20,8 +20,8 @@ import java.util.stream.StreamSupport;
 @Service
 public class ListingServiceImpl implements ListingService {
 
-    private ListingRepository listingRepository;
-    private ClientRepository clientRepository;
+    private final ListingRepository listingRepository;
+    private final ClientRepository clientRepository;
 
     public ListingServiceImpl(ListingRepository listingRepository, ClientRepository clientRepository) {
         this.listingRepository = listingRepository;
@@ -71,14 +71,21 @@ public class ListingServiceImpl implements ListingService {
 
     @Override
     public ListingEntity updateListingWithUUID(UUID listingUUID, ListingEntity listingEntity) {
-
         return listingRepository.findById(listingUUID)
                 .map(existingListing -> {
                     Optional.ofNullable(listingEntity.getTitle()).ifPresent(existingListing::setTitle);
-                    Optional.ofNullable(listingEntity.getSeller()).ifPresent(existingListing::setSeller);
+                    Optional.ofNullable(listingEntity.getDescription()).ifPresent(existingListing::setDescription);
+                    Optional.ofNullable(listingEntity.getPricePerMinimumPeriod()).ifPresent(existingListing::setPricePerMinimumPeriod);
+                    Optional.ofNullable(listingEntity.getEquipmentType()).ifPresent(existingListing::setEquipmentType);
+                    Optional.ofNullable(listingEntity.getEquipmentCondition()).ifPresent(existingListing::setEquipmentCondition);
+                    Optional.ofNullable(listingEntity.getAvailabilityPeriodStart()).ifPresent(existingListing::setAvailabilityPeriodStart);
+                    Optional.ofNullable(listingEntity.getAvailabilityPeriodEnd()).ifPresent(existingListing::setAvailabilityPeriodEnd);
                     return listingRepository.save(existingListing);
-                }).orElseThrow(() -> new RuntimeException(String.format("Listing with UUID [%s] doesn't exist!", listingUUID.toString())));
-    }
+                })
+                .orElseThrow(() -> new RuntimeException(
+                        String.format("Listing with UUID [%s] doesn't exist!", listingUUID.toString())
+                ));
+}
 
     @Override
     public List<ListingEntity> findAllListingsFromSeller(UUID sellerUUID) {
