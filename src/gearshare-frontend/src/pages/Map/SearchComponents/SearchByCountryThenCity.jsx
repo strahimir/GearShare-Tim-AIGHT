@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import countryData from "../../../assets/data/countryData"
 import { getAddressByCityInCountry } from "../../../api/listingService"
+import "../../../assets/styles/searchByCountry.css"; 
 
 function SearchByCountryThenCity({ setListings }) {
 

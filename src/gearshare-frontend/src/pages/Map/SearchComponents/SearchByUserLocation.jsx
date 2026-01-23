@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import InfoDialog from "./InfoDialog"
 import { getAddressWithinRadiusByCoords, getAddressWithinRadiusByAddress } from "../../../api/listingService"
+import "../../../assets/styles/searchByLocation.css"; 
 
 function SearchByUserLocation({ setListings }) {
 
@@ -125,7 +126,7 @@ function SearchByUserLocation({ setListings }) {
                 </label>
 
                 <fieldset>
-                    <legend>Vaša lokacija:</legend>
+                    <legend className="legendclass">Vaša lokacija:</legend>
 
                     <label>
                         Ulica:

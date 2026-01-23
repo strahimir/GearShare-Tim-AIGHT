@@ -16,6 +16,7 @@ function MapMain() {
     const renderSearchComponent = () => {
         return searchOption
             ? (
+                 
                 <SearchByCountryThenCity
                     setListings={setListings}
                     setLoading={setLoading}

@@ -71,7 +71,8 @@ function UserInfo() {
         }
     }
 
-    const handleAddAd = () => navigate('/profile/create-listing')
+    
+    const handleMaps = () => navigate('/map-search')
 
 
     const API_BASE =
@@ -233,9 +234,7 @@ function UserInfo() {
                 </>
             )}
 
-                <button className="add-ad-button" onClick={handleAddAd}>
-                    Dodaj novi oglas
-                </button>
+                
 
                 <button className="add-ad-button" onClick={becomeClient}>
                     Postani Klijent
@@ -248,6 +247,10 @@ function UserInfo() {
                 <button className="add-ad-button" onClick={becomeAdmin}>
                     Postani Administrator
                 </button>
+                <button className="add-ad-button" onClick={handleMaps}>
+                    Mape
+                </button>
+                
 
             </div>
     )
