@@ -30,7 +30,7 @@ function CatalogMain() {
   useEffect(() => {
     const fetchFilteredProducts = async () => {
       const response = await fetch("/api/products", {
-        method: "POST", // Preporučljivo koristiti POST za velike filtere
+        method: "POST", 
         headers: {
           "Content-Type": "application/json",
         },
