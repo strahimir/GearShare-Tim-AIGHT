@@ -11,6 +11,7 @@ import com.gearshare.gearshare.services.geocoding.RadarGeocodingService;
 import org.locationtech.jts.geom.Point;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,6 +38,7 @@ public class AddressController {
         this.radarGeocodingService = radarGeocodingService;
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('SELLER') and @sellerPolicy.canCreateListing(authentication.principal.clientUUID)")
     @PostMapping(path = "/{listingUUID}/address")
     public ResponseEntity<AddressDto> createAddress(@RequestBody AddressDto address,
                                                     @PathVariable("listingUUID") UUID listingUUID) {
