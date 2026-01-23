@@ -35,25 +35,16 @@ public class ClientEntity {
     @Column(unique = true, nullable = false)
     private String email;
 
-//    @Column(unique = true)
     private String phoneNumber;
-
-    @Column(nullable = false)
-    private Boolean isSuspended = false;
-
-    private Integer suspensionLength;
-
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime suspensionStartDateTime;
 
     @Column(insertable = false, updatable = false)
     private Date dateJoined;
 
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime subscriptionStartDateTime;
-
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime subscriptionEndDateTime;
+//    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+//    private LocalDateTime subscriptionStartDateTime;
+//
+//    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+//    private LocalDateTime subscriptionEndDateTime;
 
     @NotBlank
     @Column(nullable = false)
@@ -64,7 +55,17 @@ public class ClientEntity {
     @Column(nullable = false, unique = true)
     private String providerId;
 
+    @Builder.Default
     @Column(nullable = false)
     private String provider = "google";
+
+    @Builder.Default
+    @Column(nullable = false)
+    private short reportCount = 0;
+
+    @Builder.Default
+    @Column(nullable = false)
+    private String role = "USER";
+
 
 }

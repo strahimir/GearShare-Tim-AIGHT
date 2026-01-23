@@ -1,0 +1,61 @@
+/* =======================
+   Stil za formu pretrage po državi i gradu
+   ======================= */
+.search-bycountrythencity-form {
+    background-color: #f7f9fc;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 100px;
+    max-width: 700px;
+    margin: 0 auto; /* Centriranje forme */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.legendclass {
+    color: #6D94C5; /* Plava boja teksta za "Odaberite državu i grad" */
+    font-size: 18px;
+    font-weight: 700; /* Povećana debljina fonta */
+    margin-bottom: 10px;
+}
+
+/* =======================
+   Stil za select elemente (država i grad)
+   ======================= */
+.search-bycountrythencity-form select {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    width: 100%; /* Select elementi će zauzimati 100% širine svog roditeljskog elementa */
+    max-width: 250px; /* Postavljen maksimalni width za select */
+    background-color: #fff;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+    margin: 0 auto; /* Centriranje unutar svog roditeljskog div-a */
+}
+
+/* =======================
+   Stil za select elemente kad su u fokusu
+   ======================= */
+.search-bycountrythencity-form select:focus {
+    border-color: #6D94C5;
+    background-color: #f4faff; /* Svijetloplava pozadina kad je u fokusu */
+    outline: none;
+}
+
+/* =======================
+   Responsivnost - Prilagodba za manje ekrane
+   ======================= */
+@media (max-width: 768px) {
+    .search-bycountrythencity-form {
+        padding: 15px;
+        margin: 0 10px;
+    }
+
+    /* Select elementi će zauzeti cijeli prostor na manjim ekranima */
+    .search-bycountrythencity-form select {
+        max-width: 100%; /* Select elementi će zauzeti cijeli prostor na manjim ekranima */
+    }
+}

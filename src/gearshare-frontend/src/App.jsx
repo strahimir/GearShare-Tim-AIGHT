@@ -2,17 +2,15 @@ import './index.css'
 import { Routes, Route } from 'react-router'
 import HomePage from './pages/Home/HomePage'
 import WelcomePage from './pages/Welcome/WelcomePage'
-import LoginPage from './pages/Login/LoginPage'
 import CatalogPage from './pages/Catalog/CatalogPage'
 import ListingPage from './pages/Listing/ListingPage'
 import CheckoutPage from './pages/Checkout/CheckoutPage'
-import ProfilePageClient from './pages/Profile/Klijent/ProfilePageClient'
 import ProfilePage from './pages/Profile/ProfilePage'
-import CreateAdPage from './pages/Profile/Trgovac/CreateAdPage'
+import CreateListingPage from './pages/Profile/Trgovac/CreateListingPage'
 import AboutPage from './pages/About/AboutPage'
 import InboxPage from './pages/Inbox/InboxPage'
-import ChatbotPage from './pages/Chatbot/ChatbotPage'
-import ForumPage from './pages/Forum/ForumPage'
+import MapPage from './pages/Map/MapPage'
+import AdminDashboardPage from './pages/Profile/Admin/AdminDashboardPage'
 import RootRedirect from './RootRedirect'
 import { useAuth } from './hooks/useAuth'
 import { Navigate } from 'react-router'
@@ -34,6 +32,7 @@ function App() {
           path='home'
           element={<HomePage />}
         />
+        
         <Route
           path='welcome'
           element={<WelcomePage />}
@@ -46,10 +45,10 @@ function App() {
           path='catalog'
           element={<CatalogPage />}
         />
-        <Route
+        {/* <Route
           path='listing'
           element={<ListingPage />}
-        />
+        /> */}
         <Route
           path='checkout'
           element={<CheckoutPage />}
@@ -63,24 +62,28 @@ function App() {
           element={<ProfilePageClient />}
         /> */}
         <Route
-          path='profile/create-ad'
-          element={<CreateAdPage />}
+          path='profile/create-listing'
+          element={<CreateListingPage />}
         />
         <Route
           path='about'
           element={<AboutPage />}
         />
         <Route
+          path='profile'
+          element={<ProfilePage />}
+        />
+        <Route
           path='inbox'
           element={<InboxPage />}
         />
         <Route
-          path='chatbot'
-          element={<ChatbotPage />}
+          path='map-search'
+          element={<MapPage />}
         />
         <Route
-          path='forum'
-          element={<ForumPage />}
+          path='admin-dashboard'
+          element={<AdminDashboardPage />}
         />
       </Routes>
     </>

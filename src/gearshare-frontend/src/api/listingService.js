@@ -1,33 +1,103 @@
-import api from './axios'
+import api from "./axios"
 
-export async function createListing(sellerUUID, listingDto) {
+// api za adrese
+
+export async function getAddressByCityInCountry(postalCode, countryCode) {
     try {
-        const response = await api.post(`/listings/seller/${sellerUUID}`, listingDto)
+        const response = await api.get(`/listings/city`, {
+            params: { postalCode, countryCode }
+        })
         return response.data
     } catch (error) {
-        console.error(`Failed to create listing for seller ${sellerUUID}:`, error)
-        return null
+        console.error(`Failed to get listings for provided parameters:\npostal code:${postalCode}\ncountry code:${countryCode}. (${error}) `)
+    }
+
+}
+
+export async function getAddressWithinRadiusByCoords(lat, lng, radius) {
+    const response = await api.post(
+        `/listings/nearby?radius=${radius}&latitude=${lat}&longitude=${lng}`
+    )
+    return response.data
+}
+
+export async function getAddressWithinRadiusByAddress(addressDto, radius) {
+    const response = await api.post(
+        `/listings/nearby?radius=${radius}`,
+        addressDto
+    )
+    return response.data
+}
+
+
+
+export async function addAddress(listingUUID, addressDto) {
+    try {
+        const response = await api.post(`/listings/${listingUUID}/address`, addressDto)
+        return response.data
+    } catch (error) {
+        console.error(`Failed to get address for listing ${listingUUID}: `, error)
     }
 }
 
-export async function getListingsBySeller(sellerUUID) {
+export async function getAddressByListing(listingUUID) {
     try {
-        const response = await api.get(`/listings/seller/${sellerUUID}`)
+        const response = await api.get(`/listings/${listingUUID}/address`)
         return response.data
     } catch (error) {
-        console.error(`Failed to fetch listings for seller ${sellerUUID}:`, error)
-        return []
+        console.error(`Failed to get address for listing ${listingUUID}: `, error)
     }
+}
+
+export async function updateAddress(listingUUID, addressDto) {
+    try {
+        const response = await api.put(`/listings/${listingUUID}/address`, addressDto)
+        return response.data
+    } catch (error) {
+        console.error(`Failed to get address for listing ${listingUUID}: `, error)
+    }
+}
+
+// api za oglase
+
+export async function createListing(listingDto, addressDto) {
+  try {
+    const listingResponse = await api.post(`/listings`, {
+      ...listingDto,
+      minimumRentalDays: Number(listingDto.minimumRentalDays),
+      pricePerMinimumPeriod: Number(listingDto.pricePerMinimumPeriod),
+    })
+
+    const listingUUID = listingResponse.data.listingUUID
+
+    await addAddress(listingUUID, addressDto)
+
+    return listingResponse.data
+  } catch (error) {
+    console.error(`Failed to create listing:`, error?.response?.data ?? error)
+    return null
+  }
+}
+
+
+export async function getListingsBySeller(sellerUUID) {
+  try {
+    const response = await api.get(`/listings/seller/${sellerUUID}`)
+    return response.data
+  } catch (error) {
+    console.error(`Failed to fetch listings for seller ${sellerUUID}:`, error)
+    return []
+  }
 }
 
 export async function getAllListings() {
-  try {
-    const response = await api.get("/listings/all")
-    return response.data
-  } catch (error) {
-    console.error("Failed to fetch all listings:", error)
-    return []
-  }
+    try {
+        const response = await api.get("/listings/all")
+        return response.data
+    } catch (error) {
+        console.error("Failed to fetch all listings:", error)
+        return []
+    }
 }
 
 export async function getListingsPageable(options = {}) {
@@ -48,7 +118,7 @@ export async function getListingsPageable(options = {}) {
         }
 
         const response = await api.get('/listings', { params })
-        return response.data // <--------- Page<ListingDto>
+        return response.data // <--------- Page<ListingDto> !!!!!!!!!!!!!
     } catch (error) {
         console.error('Failed to fetch pageable listings:', error)
         return null
@@ -56,41 +126,41 @@ export async function getListingsPageable(options = {}) {
 }
 
 export async function getListingByUUID(listingUUID) {
-    try {
-        const response = await api.get(`/listings/${listingUUID}`)
-        return response.data
-    } catch (error) {
-        console.error(`Failed to fetch listing ${listingUUID}:`, error)
-        return null
-    }
+  try {
+    const response = await api.get(`/listings/${listingUUID}`)
+    return response.data
+  } catch (error) {
+    console.error(`Failed to fetch listing ${listingUUID}:`, error)
+    return null
+  }
 }
 
 export async function fullUpdateListing(listingUUID, listingDto) {
-    try {
-        const response = await api.put(`/listings/${listingUUID}`, listingDto)
-        return response.data
-    } catch (error) {
-        console.error(`Failed to fully update listing ${listingUUID}:`, error)
-        return null
-    }
+  try {
+    const response = await api.put(`/listings/${listingUUID}`, listingDto)
+    return response.data
+  } catch (error) {
+    console.error(`Failed to fully update listing ${listingUUID}:`, error)
+    return null
+  }
 }
 
 export async function partialUpdateListing(listingUUID, listingDto) {
-    try {
-        const response = await api.patch(`/listings/${listingUUID}`, listingDto)
-        return response.data
-    } catch (error) {
-        console.error(`Failed to partially update listing ${listingUUID}:`, error)
-        return null
-    }
+  try {
+    const response = await api.patch(`/listings/${listingUUID}`, listingDto)
+    return response.data
+  } catch (error) {
+    console.error(`Failed to partially update listing ${listingUUID}:`, error)
+    return null
+  }
 }
 
 export async function deleteListing(listingUUID) {
-    try {
-        await api.delete(`/listings/${listingUUID}`)
-        return true
-    } catch (error) {
-        console.error(`Failed to delete listing ${listingUUID}:`, error)
-        return false
-    }
+  try {
+    await api.delete(`/listings/${listingUUID}`)
+    return true
+  } catch (error) {
+    console.error(`Failed to delete listing ${listingUUID}:`, error)
+    return false
+  }
 }

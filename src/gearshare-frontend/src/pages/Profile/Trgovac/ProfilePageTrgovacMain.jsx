@@ -5,7 +5,10 @@ function ProfilePageTrgovacMain() {
   const navigate = useNavigate();
 
   const handleAddAd = () => {
-    navigate("/profile/create-ad");
+    navigate("/profile/create-listing");
+  };
+  const handleCatalog= () => {
+    navigate("/catalog");
   };
 
   return (
@@ -18,6 +21,9 @@ function ProfilePageTrgovacMain() {
 
       <button className="add-ad-button" onClick={handleAddAd}>
         Dodaj novi oglas
+      </button>
+      <button className="add-ad-button" onClick={handleCatalog}>
+        Katalog
       </button>
     </div>
   );

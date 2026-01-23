@@ -1,0 +1,91 @@
+/* =======================
+   Stil za formu pretrage
+   ======================= */
+.search-byuserlocation-form {
+    background-color: #f7f9fc;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 100px;
+    max-width: 700px;
+    margin: 0 auto; /* Centriranje forme */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.legendclass {
+    color: #6D94C5; /* Plava boja teksta za "Vaša lokacija" */
+    font-size: 18px;
+    font-weight: 700; /* Povećana debljina fonta */
+    margin-bottom: 10px;
+}
+
+/* =======================
+   Stil za etikete (labels)
+   ======================= */
+.search-byuserlocation-form label {
+    display: flex;
+    flex-direction: column;
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+    margin-bottom: 5px; /* Manji razmak između labela i inputa */
+}
+
+/* =======================
+   Stil za inpute u jednom redu
+   ======================= */
+.search-byuserlocation-form .input-row {
+    display: flex;             /* Koristimo flexbox za raspored u redu */
+    justify-content: space-between; /* Razmak između inputa */
+    gap: 15px; /* Razmak između svakog inputa */
+    flex-wrap: wrap; /* Omogućava prelazak u novi red na manjim ekranima */
+}
+
+/* =======================
+   Stil za inpute: duži i centrirani
+   ======================= */
+.search-byuserlocation-form input[type="text"],
+.search-byuserlocation-form input[type="number"] {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    width: 100%; /* Inputi će zauzimati 100% širine svog roditeljskog elementa */
+    max-width: 250px; /* Postavljen maksimalni width za duže inpute */
+    background-color: #fff;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+    margin: 0 auto; /* Centriranje unutar svog roditeljskog div-a */
+}
+
+/* =======================
+   Stil za inpute kad su u fokusu
+   ======================= */
+.search-byuserlocation-form input[type="text"]:focus,
+.search-byuserlocation-form input[type="number"]:focus {
+    border-color:#6D94C5;
+    background-color: #f4faff; /* Svijetloplava pozadina kad je u fokusu */
+    outline: none;
+}
+
+/* =======================
+   Responsivnost - Prilagodba za manje ekrane
+   ======================= */
+@media (max-width: 768px) {
+    .search-byuserlocation-form {
+        padding: 15px;
+        margin: 0 10px;
+    }
+
+    /* Inputi će zauzeti cijeli prostor na manjim ekranima */
+    .search-byuserlocation-form .input-row {
+        flex-direction: column; /* Na manjim ekranima prelamamo u vertikalni raspored */
+        gap: 10px;
+    }
+
+    .search-byuserlocation-form input[type="text"],
+    .search-byuserlocation-form input[type="number"] {
+        max-width: 100%; /* Inputi će zauzeti cijeli prostor na manjim ekranima */
+    }
+}

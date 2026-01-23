@@ -19,4 +19,7 @@ public interface ListingRepository extends JpaRepository<ListingEntity, UUID>, J
     List<ListingEntity> findAllWithSeller();
 
     List<ListingEntity> findBySeller_ClientUUID(UUID sellerUUID);
+
+    boolean existsByListingUUIDAndSeller_ClientUUID(UUID listingUUID, UUID clientUUID);
+    
 }

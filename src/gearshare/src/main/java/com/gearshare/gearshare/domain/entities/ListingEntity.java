@@ -1,6 +1,7 @@
 package com.gearshare.gearshare.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.gearshare.gearshare.interfaces.ListingInterface;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
@@ -23,7 +24,7 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table( name = "listing" )
-public class ListingEntity {
+public class ListingEntity implements ListingInterface {
 
     @Id
     @GeneratedValue( strategy = GenerationType.UUID)
@@ -33,7 +34,7 @@ public class ListingEntity {
     @Column(nullable = false)
     private String title;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne//(fetch = FetchType.EAGER)
     @JoinColumn( name = "selleruuid", referencedColumnName = "clientuuid", nullable = false)
     @OnDelete( action = OnDeleteAction.CASCADE )
     private ClientEntity seller;
@@ -54,7 +55,7 @@ public class ListingEntity {
 
     @Column(nullable = false)
     @Min(1)
-    private Integer minimumRentalDays = 1;
+    private Integer minimumRentalDays;
 
     @Column(nullable = false)
     @DecimalMin("0.0")
