@@ -4,13 +4,13 @@ function Footer() {
     return (
         <footer>
             <div>
-                Lorem ipsum dolor sit amet.
+                Contact us: +385 91 341 5879
             </div>
             <div>
-                Lorem ipsum dolor sit amet.
+                GearShare
             </div>
             <div>
-                Lorem ipsum dolor sit amet.
+                @GearShare   All rights reserved.
             </div>
         </footer>
     )

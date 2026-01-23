@@ -1,16 +1,15 @@
-import Listing from '../../Components/Listing'
+import Listing from '../../Components/Listing';
 
-function Listings({ listingsContainerStyle }) {
+function Listings({ products, listingsContainerStyle }) {
+  if (!products || products.length === 0) {
+    return <div>No products found</div>; // Ako nema proizvoda
+  }
 
-    const products = [{ id: 1 }] // dummy array
+  const displayListings = products.map((product) => (
+    <Listing key={product.id} product={product} /> // Prosljeđujemo svaki proizvod u Listing komponentu
+  ));
 
-    // listing - grid vs list <- posalji ko prop
-
-    const displayListings = products.map((product) => <Listing key={product.id} />)
-    return (
-        <div className={listingsContainerStyle}>
-            {displayListings}
-        </div>
-    )
+  return <div className={listingsContainerStyle}>{displayListings}</div>;
 }
-export default Listings
+
+export default Listings;
