@@ -36,6 +36,7 @@ public class ImageController {
         this.imageMapper = imageMapper;
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER') or hasRole('SELLER') and @sellerPolicy.canCreateListing(authentication.principal.clientUUID)")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ImageDto> addImage(
             @RequestParam("file") MultipartFile file,
