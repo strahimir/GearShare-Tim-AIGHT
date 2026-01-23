@@ -55,12 +55,17 @@ public class ClientEntity {
     @Column(nullable = false, unique = true)
     private String providerId;
 
+    @Builder.Default
     @Column(nullable = false)
     private String provider = "google";
 
-    private int reportCount = 0;
+    @Builder.Default
+    @Column(nullable = false)
+    private short reportCount = 0;
 
-    private String role = "user";
+    @Builder.Default
+    @Column(nullable = false)
+    private String role = "USER";
 
 
 }

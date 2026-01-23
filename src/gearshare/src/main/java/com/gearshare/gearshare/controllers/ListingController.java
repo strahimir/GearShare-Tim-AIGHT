@@ -4,6 +4,7 @@ import com.gearshare.gearshare.domain.dto.ListingDto;
 import com.gearshare.gearshare.domain.entities.ListingEntity;
 import com.gearshare.gearshare.filters.ListingsFilter;
 import com.gearshare.gearshare.mappers.Mapper;
+import com.gearshare.gearshare.security.ClientPrincipal;
 import com.gearshare.gearshare.services.ListingService;
 import com.gearshare.gearshare.specifications.ListingSpecification;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -27,7 +30,6 @@ import java.util.stream.Collectors;
 public class ListingController {
 
     private final Mapper<ListingEntity, ListingDto> listingMapper;
-
     private final ListingService listingService;
 
     public ListingController(Mapper<ListingEntity, ListingDto> listingMapper, ListingService listingService) {
@@ -35,11 +37,23 @@ public class ListingController {
         this.listingService = listingService;
     }
 
-    @PostMapping(path = "/seller/{sellerUUID}")
+    /**
+     * CREATE LISTING
+     * RBAC: must be ROLE_SELLER
+     * ABAC: must have active subscription (sellerPolicy)
+     *
+     * IMPORTANT: seller UUID comes from the authenticated principal, NOT from the URL.
+     */
+    @PreAuthorize("hasRole('SELLER') and @sellerPolicy.canCreateListing(authentication.principal.clientUUID)")
+    @PostMapping
     public ResponseEntity<ListingDto> createListing(@RequestBody ListingDto listing,
-                                                    @PathVariable("sellerUUID") UUID sellerUUID) {
+                                                    @AuthenticationPrincipal ClientPrincipal me) {
+
+        UUID sellerUUID = me.getClientUUID();
+
         ListingEntity listingEntity = listingMapper.mapFrom(listing);
         ListingEntity savedListingEntity = listingService.createOrUpdateListing(listingEntity, sellerUUID);
+
         return new ResponseEntity<>(listingMapper.mapTo(savedListingEntity), HttpStatus.CREATED);
     }
 
@@ -55,15 +69,6 @@ public class ListingController {
 
         return new ResponseEntity<>(listingDtos, HttpStatus.OK);
     }
-
-//    @GetMapping(path = "/all")
-//    public List<ListingDto> getAllListings() {
-//        List<ListingEntity> listings = listingService.findAllListings();
-//        return listings
-//                .stream()
-//                .map(listingMapper::mapTo)
-//                .collect(Collectors.toList());
-//    }
 
     @GetMapping(path = "/filtered")
     public ResponseEntity<Page<ListingDto>> getAllListingsPageable(
@@ -115,35 +120,59 @@ public class ListingController {
         Specification<ListingEntity> specification = ListingSpecification.filterBy(filter);
 
         Page<ListingEntity> listings = listingService.findAllListingsPageable(pageable, specification);
-        return new ResponseEntity<>(listings
-                .map(listingMapper::mapTo), HttpStatus.OK);
+        return new ResponseEntity<>(listings.map(listingMapper::mapTo), HttpStatus.OK);
     }
 
     @GetMapping(path = "/{listingUUID}")
-    public ResponseEntity<ListingDto> getListingByUUID(
-            @PathVariable("listingUUID") UUID listingUUID) {
+    public ResponseEntity<ListingDto> getListingByUUID(@PathVariable("listingUUID") UUID listingUUID) {
         Optional<ListingEntity> listing = listingService.findListingWithUUID(listingUUID);
         return listing.map(
-                listingEntity -> new ResponseEntity<>(
-                        listingMapper.mapTo(listingEntity),
-                        HttpStatus.OK)
+                listingEntity -> new ResponseEntity<>(listingMapper.mapTo(listingEntity), HttpStatus.OK)
         ).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    /**
+     * FULL UPDATE
+     * RBAC: must be ROLE_SELLER
+     * ABAC:
+     *  - active subscription (sellerPolicy)
+     *  - must own listing (listingPolicy)
+     */
+    @PreAuthorize("""
+        hasRole('SELLER')
+        and @sellerPolicy.canEditOrDeleteListing(authentication.principal.clientUUID)
+        and @listingPolicy.isOwner(#listingUUID, authentication.principal.clientUUID)
+        """)
     @PutMapping(path = "/{listingUUID}")
     public ResponseEntity<ListingDto> fullUpdateListing(@PathVariable("listingUUID") UUID listingUUID,
-                                                        @RequestBody ListingDto listing) {
+                                                        @RequestBody ListingDto listing,
+                                                        @AuthenticationPrincipal ClientPrincipal me) {
 
         if (!listingService.exists(listingUUID))
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         listing.setListingUUID(listingUUID);
         ListingEntity listingEntity = listingMapper.mapFrom(listing);
-        ListingEntity savedListingEntity = listingService.createOrUpdateListing(listingEntity, listing.getSeller().getClientUUID());
+
+        // IMPORTANT: do NOT trust seller UUID from request body; enforce principal seller UUID
+        ListingEntity savedListingEntity =
+                listingService.createOrUpdateListing(listingEntity, me.getClientUUID());
 
         return new ResponseEntity<>(listingMapper.mapTo(savedListingEntity), HttpStatus.OK);
     }
 
+    /**
+     * PARTIAL UPDATE
+     * RBAC: must be ROLE_SELLER
+     * ABAC:
+     *  - active subscription (sellerPolicy)
+     *  - must own listing (listingPolicy)
+     */
+    @PreAuthorize("""
+        hasRole('SELLER')
+        and @sellerPolicy.canEditOrDeleteListing(authentication.principal.clientUUID)
+        and @listingPolicy.isOwner(#listingUUID, authentication.principal.clientUUID)
+        """)
     @PatchMapping(path = "/{listingUUID}")
     public ResponseEntity<ListingDto> partialUpdateListing(@RequestBody ListingDto listingDto,
                                                            @PathVariable("listingUUID") UUID listingUUID) {
@@ -158,6 +187,18 @@ public class ListingController {
         return new ResponseEntity<>(listingMapper.mapTo(updatedListingEntity), HttpStatus.OK);
     }
 
+    /**
+     * DELETE
+     * RBAC: must be ROLE_SELLER
+     * ABAC:
+     *  - active subscription (sellerPolicy)
+     *  - must own listing (listingPolicy)
+     */
+    @PreAuthorize("""
+        hasRole('SELLER')
+        and @sellerPolicy.canEditOrDeleteListing(authentication.principal.clientUUID)
+        and @listingPolicy.isOwner(#listingUUID, authentication.principal.clientUUID)
+        """)
     @DeleteMapping(path = "/{listingUUID}")
     public ResponseEntity<Void> deleteListingByUUID(@PathVariable("listingUUID") UUID listingUUID) {
 
@@ -167,7 +208,4 @@ public class ListingController {
         listingService.deleteListingWithUUID(listingUUID);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-
 }
-

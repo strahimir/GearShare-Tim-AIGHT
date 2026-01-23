@@ -1,4 +1,4 @@
-import api from './axios'
+import api from "./axios"
 
 // api za adrese
 
@@ -60,38 +60,34 @@ export async function updateAddress(listingUUID, addressDto) {
 
 // api za oglase
 
-export async function createListing(sellerUUID, listingDto, addressDto) {
-    try {
-        const listingResponse = await api.post(
-            `/listings/seller/${sellerUUID}`,
-            listingDto
-        )
+export async function createListing(listingDto, addressDto) {
+  try {
+    const listingResponse = await api.post(`/listings`, {
+      ...listingDto,
+      minimumRentalDays: Number(listingDto.minimumRentalDays),
+      pricePerMinimumPeriod: Number(listingDto.pricePerMinimumPeriod),
+    })
 
-        const listingUUID = listingResponse.data.listingUUID
+    const listingUUID = listingResponse.data.listingUUID
 
-        const addressResponseData = await addAddress(listingUUID, addressDto)
+    await addAddress(listingUUID, addressDto)
 
-        // console.log(addressResponseData.coordinates)
-
-        return listingResponse.data
-    } catch (error) {
-        console.error(
-            `Failed to create listing for seller ${sellerUUID}:`,
-            error
-        )
-        return null
-    }
+    return listingResponse.data
+  } catch (error) {
+    console.error(`Failed to create listing:`, error?.response?.data ?? error)
+    return null
+  }
 }
 
 
 export async function getListingsBySeller(sellerUUID) {
-    try {
-        const response = await api.get(`/listings/seller/${sellerUUID}`)
-        return response.data
-    } catch (error) {
-        console.error(`Failed to fetch listings for seller ${sellerUUID}:`, error)
-        return []
-    }
+  try {
+    const response = await api.get(`/listings/seller/${sellerUUID}`)
+    return response.data
+  } catch (error) {
+    console.error(`Failed to fetch listings for seller ${sellerUUID}:`, error)
+    return []
+  }
 }
 
 export async function getAllListings() {
@@ -130,41 +126,41 @@ export async function getListingsPageable(options = {}) {
 }
 
 export async function getListingByUUID(listingUUID) {
-    try {
-        const response = await api.get(`/listings/${listingUUID}`)
-        return response.data
-    } catch (error) {
-        console.error(`Failed to fetch listing ${listingUUID}:`, error)
-        return null
-    }
+  try {
+    const response = await api.get(`/listings/${listingUUID}`)
+    return response.data
+  } catch (error) {
+    console.error(`Failed to fetch listing ${listingUUID}:`, error)
+    return null
+  }
 }
 
 export async function fullUpdateListing(listingUUID, listingDto) {
-    try {
-        const response = await api.put(`/listings/${listingUUID}`, listingDto)
-        return response.data
-    } catch (error) {
-        console.error(`Failed to fully update listing ${listingUUID}:`, error)
-        return null
-    }
+  try {
+    const response = await api.put(`/listings/${listingUUID}`, listingDto)
+    return response.data
+  } catch (error) {
+    console.error(`Failed to fully update listing ${listingUUID}:`, error)
+    return null
+  }
 }
 
 export async function partialUpdateListing(listingUUID, listingDto) {
-    try {
-        const response = await api.patch(`/listings/${listingUUID}`, listingDto)
-        return response.data
-    } catch (error) {
-        console.error(`Failed to partially update listing ${listingUUID}:`, error)
-        return null
-    }
+  try {
+    const response = await api.patch(`/listings/${listingUUID}`, listingDto)
+    return response.data
+  } catch (error) {
+    console.error(`Failed to partially update listing ${listingUUID}:`, error)
+    return null
+  }
 }
 
 export async function deleteListing(listingUUID) {
-    try {
-        await api.delete(`/listings/${listingUUID}`)
-        return true
-    } catch (error) {
-        console.error(`Failed to delete listing ${listingUUID}:`, error)
-        return false
-    }
+  try {
+    await api.delete(`/listings/${listingUUID}`)
+    return true
+  } catch (error) {
+    console.error(`Failed to delete listing ${listingUUID}:`, error)
+    return false
+  }
 }

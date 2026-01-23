@@ -1,6 +1,7 @@
 package com.gearshare.gearshare.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.gearshare.gearshare.interfaces.ListingInterface;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
@@ -23,7 +24,7 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table( name = "listing" )
-public class ListingEntity {
+public class ListingEntity implements ListingInterface {
 
     @Id
     @GeneratedValue( strategy = GenerationType.UUID)

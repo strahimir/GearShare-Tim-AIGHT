@@ -23,7 +23,7 @@ CREATE TABLE client (
     provider VARCHAR(50),
     providerId VARCHAR(255),
     reportcount SMALLINT DEFAULT 0,
-    role VARCHAR DEFAULT 'user'
+    role VARCHAR(50) DEFAULT 'user'
 );
 
 CREATE TABLE seller (
