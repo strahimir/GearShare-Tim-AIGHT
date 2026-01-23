@@ -1,10 +1,9 @@
 package com.gearshare.gearshare.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -15,26 +14,30 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table( name = "image" )
+@Table(name = "image")
 public class ImageEntity {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID imageUUID;
 
     private String filename;
 
+    // NE vraćaj bytea u JSON response (ali dozvoli da se pošalje u requestu)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "content", columnDefinition = "bytea")
     private byte[] content;
 
-    @ManyToOne
+    // Prekini serializaciju (i spriječi ogromne/nested objekte)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "listinguuid", referencedColumnName = "listinguuid")
-    @OnDelete( action = OnDeleteAction.CASCADE )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private ListingEntity listing;
 
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "clientuuid", referencedColumnName = "clientuuid")
-    @OnDelete( action = OnDeleteAction.CASCADE )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private ClientEntity client;
-
 }
