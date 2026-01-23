@@ -65,7 +65,7 @@ function CreateListingPage() {
     listingCountryCode: countryCode
   }
 
-  const result = await createListing(user.clientUUID, listingData, addressData)
+  const result = await createListing(listingData, addressData)
 
   if (result) {
     const listingUUID = result.listingUUID
@@ -77,6 +77,7 @@ function CreateListingPage() {
     console.error("Failed to create listing.")
   }
 }
+
 
 
 

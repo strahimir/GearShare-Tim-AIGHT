@@ -60,27 +60,23 @@ export async function updateAddress(listingUUID, addressDto) {
 
 // api za oglase
 
-export async function createListing(sellerUUID, listingDto, addressDto) {
-    try {
-        const listingResponse = await api.post(
-            `/listings/seller/${sellerUUID}`,
-            listingDto
-        )
+export async function createListing(listingDto, addressDto) {
+  try {
+    const listingResponse = await api.post(`/listings`, {
+      ...listingDto,
+      minimumRentalDays: Number(listingDto.minimumRentalDays),
+      pricePerMinimumPeriod: Number(listingDto.pricePerMinimumPeriod),
+    })
 
-        const listingUUID = listingResponse.data.listingUUID
+    const listingUUID = listingResponse.data.listingUUID
 
-        const addressResponseData = await addAddress(listingUUID, addressDto)
+    await addAddress(listingUUID, addressDto)
 
-        // console.log(addressResponseData.coordinates)
-
-        return listingResponse.data
-    } catch (error) {
-        console.error(
-            `Failed to create listing for seller ${sellerUUID}:`,
-            error
-        )
-        return null
-    }
+    return listingResponse.data
+  } catch (error) {
+    console.error(`Failed to create listing:`, error?.response?.data ?? error)
+    return null
+  }
 }
 
 
