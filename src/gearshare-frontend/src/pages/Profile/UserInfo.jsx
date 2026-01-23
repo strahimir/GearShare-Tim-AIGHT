@@ -250,7 +250,6 @@ function UserInfo() {
                 </button>
 
             </div>
-        </div>
     )
 }
 

@@ -38,7 +38,7 @@ public class RentalEntity {
     private ClientEntity seller;
 
     @ManyToOne
-    @JoinColumn( name = "listing", referencedColumnName = "listinguuid", nullable = false)
+    @JoinColumn( name = "listinguuid", referencedColumnName = "listinguuid", nullable = false)
     @OnDelete( action = OnDeleteAction.CASCADE )
     private ListingEntity listing;
 
@@ -46,7 +46,7 @@ public class RentalEntity {
 
     private LocalDateTime rentingEndDateTime;
 
-    private int rating;
+    private Short rating;
 
     private String review;
 
