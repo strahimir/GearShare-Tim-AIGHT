@@ -119,6 +119,9 @@ function UserInfo() {
         alert("Ne mogu promijeniti ulogu na ADMIN. Jesi li prijavljen?");
     }
     };
+    const handleAddAd = () => {
+    navigate("/profile/create-listing");
+  };
 
     return (
         <div className="user-profile-container">
@@ -246,6 +249,9 @@ function UserInfo() {
 
                 <button className="add-ad-button" onClick={becomeAdmin}>
                     Postani Administrator
+                </button>
+                <button className="add-ad-button" onClick={handleAddAd}>
+                    Dodaj novi oglas
                 </button>
                 <button className="add-ad-button" onClick={handleMaps}>
                     Mape
