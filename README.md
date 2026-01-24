@@ -21,6 +21,8 @@ GearShare je web platforma za iznajmljivanje sezonske sportske opreme, koja omog
 Pristup stranici: https://gearshare-tim-aight-1.onrender.com/
 
 Wiki i dokumentacija: [GitHub Wiki](https://github.com/strahimir/GearShare-Tim-AIGHT/wiki)
+  - u pdf obliku: [Wiki.pdf](https://github.com/user-attachments/files/24832599/Wiki.pdf)
+
 
 ## Autori
 - [Matija Antun Dürrigl](https://github.com/digi235)
